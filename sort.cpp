@@ -147,9 +147,6 @@ int main(void)
 
     heapsort(a, 0, N-1, L, S);
 
-    cout << "Surūšiuotas skaičių masyvas yra:" << endl;
-    for (i = 0; i < N; i++) cout << a[i] << " ";
-
     //Darom masyva nuo 0 iki 1000
     for (i = 0; i < N; i++)
       a[i] = i;
