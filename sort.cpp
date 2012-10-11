@@ -7,6 +7,8 @@ template <class T> void insertion(T *, int, int, int &, int &);
 template <class T> void bubble(T *, int, int, int &, int &);
 template <class T> void partition(T &, int &, int &, int &, int &, int &);
 template <class T> void quicksort(T *, int, int, int &, int &);
+template <class T> void heapsort(T *, int, int, int &, int &);
+template <class T> void perstatymas(T *, int, int, int &, int &);
 using namespace std;
 
 int main(void)
@@ -134,7 +136,38 @@ int main(void)
     cout << "Lyginimo operaciju (1000-0):  " << Lb << endl;
     cout << endl;
 
+    for (i = 0; i < N; i++)
+      a[i] = 1000*(1.0*rand()/RAND_MAX);
+    L=0;
+    S=0;
+    La=0;
+    Sa=0;
+    Lb=0;
+    Sb=0;
 
+    heapsort(a, 0, N-1, L, S);
+
+    cout << "Surūšiuotas skaičių masyvas yra:" << endl;
+    for (i = 0; i < N; i++) cout << a[i] << " ";
+
+    //Darom masyva nuo 0 iki 1000
+    for (i = 0; i < N; i++)
+      a[i] = i;
+    heapsort(a, 0, N-1, La, Sa);
+    //Darom masyva nuo 1000 iki 0
+    for (i = 0; i < N; i++)
+      a[i] = 1000-i;
+    heapsort(a, 0, N-1, Lb, Sb);
+
+    cout << endl;
+    cout << "Heapsort metodas" << endl;
+    cout << "Sukeitimo operaciju (random): " << S << endl;
+    cout << "Lyginimo operaciju (random):  " << L << endl;
+    cout << "Sukeitimo operaciju (0-1000): " << Sa << endl;
+    cout << "Lyginimo operaciju (0-1000):  " << La << endl;
+    cout << "Sukeitimo operaciju (1000-0): " << Sb << endl;
+    cout << "Lyginimo operaciju (1000-0):  " << Lb << endl;
+    cout << endl;
 
 }
 
@@ -243,5 +276,51 @@ void quicksort(T a[], int left, int right, int &sksuk, int &sklyg)
     }
 }
 
+//-------------------------------------------
+// heapsort algoritmas
+//-------------------------------------------
+template <class T>
+void perstatymas(T a[], int i, int j, int &L, int &S)
+{
+    int k, k1, k2, laik;
+    if (i <= j/2){
+        k1 = 2 * i;
+        k2 = 2 * i + 1;
+        if (k2 > j){
+            k2 = k1;
+        }
+        if (a[k1-1] > a[k2-1]){
+            k = k1;
+            L++;
+        }
+        else {
+            k = k2;
+            L++;
+        }
+        if (a[i-1] < a[k-1]){
+            L++;
+            laik = a[i-1];
+            a[i-1] = a[k-1];
+            a[k-1] = laik;
+            S++;
+            perstatymas(a, k, j, L, S);
+        }
+    }
+}
 
+template <class T>
+void heapsort(T a[], int l, int r, int &L, int &S)
+{
+    int i, laik;
+    for (i=r; i>l; i--){
+        perstatymas(a, i, r, L, S);
+    }
 
+    for (i=r; i>=2; i--){
+        laik = a[0];
+        a[0] = a[i-1];
+        a[i-1] = laik;
+        perstatymas(a, 1, i-1, L, S);
+    }
+
+}
